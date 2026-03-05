@@ -6,11 +6,15 @@
 
 using namespace std;
 
-// Week 1: basic appliance record + menu + add/list (no files yet)
+// Week 2: adds energy calculation + summary table
 struct Appliance {
     string name;
     double powerW = 0.0;
     double hoursPerDay = 0.0;
+
+    double kwhPerDay() const {
+        return (powerW * hoursPerDay) / 1000.0;
+    }
 };
 
 static void clearInput() {
@@ -44,9 +48,10 @@ static string readNonEmptyLine(const string& prompt) {
 }
 
 static int showMenu() {
-    cout << "\n========== Electrical Load Monitor (Week 1) ==========\n";
+    cout << "\n========== Electrical Load Monitor (Week 2) ==========\n";
     cout << "1) Register appliance\n";
     cout << "2) View appliances\n";
+    cout << "3) Energy summary (kWh/day)\n";
     cout << "0) Exit\n";
     cout << "Choose: ";
 
@@ -70,7 +75,7 @@ static void registerAppliance(vector<Appliance>& list) {
     a.hoursPerDay = readNumber("Enter hours per day (0 - 24): ", 0.0, 24.0);
 
     list.push_back(a);
-    cout << "Saved (in memory for Week 1).\n";
+    cout << "Saved (in memory for Week 2).\n";
 }
 
 static void viewAppliances(const vector<Appliance>& list) {
@@ -97,6 +102,36 @@ static void viewAppliances(const vector<Appliance>& list) {
     }
 }
 
+static void energySummary(const vector<Appliance>& list) {
+    if (list.empty()) {
+        cout << "No appliances registered yet.\n";
+        return;
+    }
+
+    cout << "\n---------------- ENERGY SUMMARY ----------------\n";
+    cout << left
+         << setw(5)  << "No."
+         << setw(20) << "Name"
+         << setw(12) << "kWh/day"
+         << "\n-----------------------------------------------\n";
+
+    double totalKwh = 0.0;
+
+    for (size_t i = 0; i < list.size(); i++) {
+        double kwh = list[i].kwhPerDay();
+        totalKwh += kwh;
+
+        cout << left
+             << setw(5)  << (i + 1)
+             << setw(20) << list[i].name
+             << setw(12) << fixed << setprecision(3) << kwh
+             << "\n";
+    }
+
+    cout << "-----------------------------------------------\n";
+    cout << "TOTAL ENERGY: " << fixed << setprecision(3) << totalKwh << " kWh/day\n";
+}
+
 int main() {
     vector<Appliance> appliances;
 
@@ -109,6 +144,9 @@ int main() {
                 break;
             case 2:
                 viewAppliances(appliances);
+                break;
+            case 3:
+                energySummary(appliances);
                 break;
             case 0:
                 cout << "Goodbye.\n";
