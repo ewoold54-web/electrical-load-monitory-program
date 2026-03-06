@@ -304,7 +304,7 @@ void billingReport(const vector<Appliance>& appliances) {
 }
 
 int main() {
-    // Week 4: load saved appliances at start
+    // Week 4: load saved appliances at start//
     vector<Appliance> appliances = loadAppliances();
 
     while (true) {
