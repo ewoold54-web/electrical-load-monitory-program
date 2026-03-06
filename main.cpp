@@ -47,7 +47,7 @@ void saveAppliances(const vector<Appliance>& appliances) {
     }
 }
 
-// Load appliances from text file (if file exists)
+// Load appliances from text file (if file exists)//
 vector<Appliance> loadAppliances() {
     vector<Appliance> appliances;
     ifstream in(APPLIANCES_FILE);
