@@ -148,7 +148,7 @@ billingSummary()
 
 This improves readability and maintainability.
 
-How to Compile and Run
+How to Compile and Run.
 
 Compile the program:
 
