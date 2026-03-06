@@ -1,0 +1,2 @@
+Electric cooker|250|2
+TV|46|7

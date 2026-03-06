@@ -1,0 +1,10 @@
+============= BILLING REPORT =============
+No.  Name              kWh/day     Cost/day    
+------------------------------------------
+1    Electric cooker   0.500       21.50       
+2    TV                0.322       13.85       
+------------------------------------------
+Total Energy (per day): 0.822 kWh/day
+Total Cost (per day):   35.35
+Monthly Energy (30d):   24.660 kWh
+Monthly Cost (30d):     1060.38
