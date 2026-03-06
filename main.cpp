@@ -3,6 +3,8 @@
 #include <string>
 #include <limits>
 #include <iomanip>
+#include <algorithm>
+#include <cctype>
 
 using namespace std;
 
@@ -16,6 +18,11 @@ struct Appliance {
         return (powerW * hoursPerDay) / 1000.0;
     }
 };
+static string toLowerCopy(string s) {
+    transform(s.begin(), s.end(), s.begin(),
+              [](unsigned char c) { return static_cast<char>(tolower(c)); });
+    return s;
+}
 
 static void clearInput() {
     cin.clear();
@@ -52,6 +59,7 @@ static int showMenu() {
     cout << "1) Register appliance\n";
     cout << "2) View appliances\n";
     cout << "3) Energy summary (kWh/day)\n";
+    cout << "4) Search appliance by name\n";
     cout << "0) Exit\n";
     cout << "Choose: ";
 
@@ -65,6 +73,37 @@ static int showMenu() {
     return choice;
 }
 
+static void searchAppliance(const vector<Appliance>& list) {
+    if (list.empty()) {
+        cout << "No appliances registered yet.\n";
+        return;
+    }
+
+    clearInput();
+    string query = readNonEmptyLine("Enter appliance name to search: ");
+    string q = toLowerCopy(query);
+
+    bool found = false;
+
+    cout << "\n---------------- SEARCH RESULTS ----------------\n";
+
+    for (size_t i = 0; i < list.size(); i++) {
+        if (toLowerCopy(list[i].name).find(q) != string::npos) {
+            found = true;
+            cout << left
+                 << setw(5)  << (i + 1)
+                 << setw(20) << list[i].name
+                 << setw(12) << fixed << setprecision(2) << list[i].powerW
+                 << setw(12) << fixed << setprecision(2) << list[i].hoursPerDay
+                 << setw(12) << fixed << setprecision(3) << list[i].kwhPerDay()
+                 << "\n";
+        }
+    }
+
+    if (!found) {
+        cout << "No appliance matched: " << query << "\n";
+    }
+}
 static void registerAppliance(vector<Appliance>& list) {
     clearInput(); // remove leftover newline after reading menu choice
 
@@ -147,6 +186,9 @@ int main() {
                 break;
             case 3:
                 energySummary(appliances);
+                case 4:
+    searchAppliance(appliances);
+    break;
                 break;
             case 0:
                 cout << "Goodbye.\n";
